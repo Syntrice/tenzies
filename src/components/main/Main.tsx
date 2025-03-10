@@ -3,15 +3,15 @@ import Die from "../die/Die"
 import React from "react"
 
 interface DieData {
-  id: number,
-  number: number,
+  id: number
+  number: number
   isHeld: boolean
 }
 
 export default function Main() {
   function generateRandomDice(): DieData[] {
     // This function generates an array of length 10 with random numbers between 1 and 6
-    
+
     let idCount = 0
     return Array.from({ length: 10 }, () => {
       return {
@@ -24,6 +24,14 @@ export default function Main() {
 
   const [numbers, setNumbers] = React.useState<DieData[]>(generateRandomDice())
 
+  function holdDie(id: number) {
+    setNumbers((prev) => {
+      return prev.map((n) => {
+        return n.id === id ? { ...n, isHeld: !n.isHeld } : n
+      })
+    })
+  }
+
   return (
     <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center justify-center gap-8 rounded-xl p-10 shadow-[10px_10px_3px_0px_rgba(255,255,255,0.25)]">
       <p>
@@ -32,7 +40,12 @@ export default function Main() {
       </p>
       <div className="grid h-fit w-fit grid-cols-5 grid-rows-2 place-items-center gap-5">
         {numbers.map((n) => (
-          <Die key={n.id} number={n.number} isHeld={n.isHeld} />
+          <Die
+            onClick={() => holdDie(n.id)}
+            key={n.id}
+            number={n.number}
+            isHeld={n.isHeld}
+          />
         ))}
       </div>
       <div>
