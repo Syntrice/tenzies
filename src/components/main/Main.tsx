@@ -9,23 +9,32 @@ interface DieData {
 }
 
 export default function Main() {
-  function generateRandomDice(): DieData[] {
+
+  function generateRandomNumber() {
+    return Math.floor(Math.random() * 6) + 1
+  }
+
+  function generateNewDice(): DieData[] {
     // This function generates an array of length 10 with random numbers between 1 and 6
 
     let idCount = 0
     return Array.from({ length: 10 }, () => {
       return {
-        number: Math.floor(Math.random() * 6) + 1,
+        number: generateRandomNumber(),
         isHeld: false,
         id: idCount++,
       }
     })
   }
 
-  const [numbers, setNumbers] = React.useState<DieData[]>(generateRandomDice())
+  const [dice, setDice] = React.useState<DieData[]>(generateNewDice())
+
+  function rollDice() {
+    setDice(prev => prev.map((d) => {return {...d, number: generateRandomNumber()}}))
+  }
 
   function holdDie(id: number) {
-    setNumbers((prev) => {
+    setDice((prev) => {
       return prev.map((n) => {
         return n.id === id ? { ...n, isHeld: !n.isHeld } : n
       })
@@ -39,17 +48,17 @@ export default function Main() {
         current value between rolls.
       </p>
       <div className="grid h-fit w-fit grid-cols-5 grid-rows-2 place-items-center gap-5">
-        {numbers.map((n) => (
+        {dice.map((d) => (
           <Die
-            onClick={() => holdDie(n.id)}
-            key={n.id}
-            number={n.number}
-            isHeld={n.isHeld}
+            onClick={() => holdDie(d.id)}
+            key={d.id}
+            number={d.number}
+            isHeld={d.isHeld}
           />
         ))}
       </div>
       <div>
-        <Button onClick={() => setNumbers(generateRandomDice())}>Roll</Button>
+        <Button onClick={rollDice}>Roll</Button>
       </div>
     </main>
   )
