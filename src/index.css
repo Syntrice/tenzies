@@ -12,3 +12,6 @@
     --default-font-family: 'Space Mono', monospace;
 }
 
+html {
+    font-size: 1.5em;
+}
