@@ -3,6 +3,7 @@ import Die from "../die/Die"
 import React from "react"
 
 interface DieData {
+  id: number,
   number: number,
   isHeld: boolean
 }
@@ -10,10 +11,13 @@ interface DieData {
 export default function Main() {
   function generateRandomDice(): DieData[] {
     // This function generates an array of length 10 with random numbers between 1 and 6
+    
+    let idCount = 0
     return Array.from({ length: 10 }, () => {
       return {
         number: Math.floor(Math.random() * 6) + 1,
-        isHeld: false
+        isHeld: false,
+        id: idCount++,
       }
     })
   }
@@ -28,7 +32,7 @@ export default function Main() {
       </p>
       <div className="grid h-fit w-fit grid-cols-5 grid-rows-2 place-items-center gap-5">
         {numbers.map((n) => (
-          <Die number={n.number} />
+          <Die key={n.id} number={n.number} />
         ))}
       </div>
       <div>
