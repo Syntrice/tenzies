@@ -30,7 +30,9 @@ export default function Main() {
   const [dice, setDice] = React.useState<DieData[]>(generateNewDice())
 
   function rollDice() {
-    setDice(prev => prev.map((d) => {return {...d, number: generateRandomNumber()}}))
+    setDice(prev => prev.map((d) => {
+      return d.isHeld ? d : {...d, number: generateRandomNumber()}
+    }))
   }
 
   function holdDie(id: number) {
