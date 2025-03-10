@@ -2,23 +2,37 @@ import Button from "../common/Button"
 import Die from "../die/Die"
 import React from "react"
 
-export default function Main() {
+interface DieData {
+  number: number,
+  isHeld: boolean
+}
 
-  function generateRandomNumbers(): number[] {
+export default function Main() {
+  function generateRandomDice(): DieData[] {
     // This function generates an array of length 10 with random numbers between 1 and 6
-    return Array.from({ length: 10 }, () => Math.floor(Math.random() * 6) + 1)
+    return Array.from({ length: 10 }, () => {
+      return {
+        number: Math.floor(Math.random() * 6) + 1,
+        isHeld: false
+      }
+    })
   }
 
-  const [numbers, setNumbers] = React.useState<number[]>(generateRandomNumbers())
+  const [numbers, setNumbers] = React.useState<DieData[]>(generateRandomDice())
 
   return (
-    <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center p-10 justify-center gap-8 rounded-xl shadow-[10px_10px_3px_0px_rgba(255,255,255,0.25)]">
-      <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+    <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center justify-center gap-8 rounded-xl p-10 shadow-[10px_10px_3px_0px_rgba(255,255,255,0.25)]">
+      <p>
+        Roll until all dice are the same. Click each die to freeze it at its
+        current value between rolls.
+      </p>
       <div className="grid h-fit w-fit grid-cols-5 grid-rows-2 place-items-center gap-5">
-        { numbers.map(n => <Die number={n}/>) }
+        {numbers.map((n) => (
+          <Die number={n.number} />
+        ))}
       </div>
       <div>
-        <Button onClick={() => setNumbers(generateRandomNumbers())}>Roll</Button>
+        <Button onClick={() => setNumbers(generateRandomDice())}>Roll</Button>
       </div>
     </main>
   )
