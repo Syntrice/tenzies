@@ -12,7 +12,8 @@ export default function Main() {
   const [numbers, setNumbers] = React.useState<number[]>(generateRandomNumbers())
 
   return (
-    <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center justify-center gap-20 rounded-xl shadow-2xl">
+    <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center p-10 justify-center gap-8 rounded-xl shadow-2xl">
+      <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
       <div className="grid h-fit w-fit grid-cols-5 grid-rows-2 place-items-center gap-5">
         { numbers.map(n => <Die number={n}/>) }
       </div>
