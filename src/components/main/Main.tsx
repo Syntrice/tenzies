@@ -16,7 +16,7 @@ export default function Main() {
     return Array.from({ length: 10 }, () => {
       return {
         number: Math.floor(Math.random() * 6) + 1,
-        isHeld: false,
+        isHeld: true,
         id: idCount++,
       }
     })
@@ -32,7 +32,7 @@ export default function Main() {
       </p>
       <div className="grid h-fit w-fit grid-cols-5 grid-rows-2 place-items-center gap-5">
         {numbers.map((n) => (
-          <Die key={n.id} number={n.number} />
+          <Die key={n.id} number={n.number} isHeld={n.isHeld} />
         ))}
       </div>
       <div>
