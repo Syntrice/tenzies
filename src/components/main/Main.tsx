@@ -16,7 +16,7 @@ export default function Main() {
     return Array.from({ length: 10 }, () => {
       return {
         number: Math.floor(Math.random() * 6) + 1,
-        isHeld: true,
+        isHeld: false,
         id: idCount++,
       }
     })
