@@ -43,6 +43,15 @@ export default function Main() {
     })
   }
 
+  function checkIfWin(): boolean {
+    const diceValues  = new Set<number>() // need to keep track of unique values
+    dice.forEach((d) => {
+      if (!d.isHeld) return false // return false if any die is not held - shortcircuit
+      diceValues.add(d.number) // add to set
+    })
+    return diceValues.size === 1 // should only be 1 unique value in the set if all dice are the same
+  }
+
   return (
     <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center justify-center gap-8 rounded-xl p-10 shadow-[10px_10px_3px_0px_rgba(255,255,255,0.25)]">
       <p>
