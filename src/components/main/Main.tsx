@@ -9,6 +9,8 @@ interface DieData {
 }
 
 export default function Main() {
+  const [dice, setDice] = React.useState<DieData[]>(generateNewDice())
+  const isWin = React.useMemo(() => checkIfWin(), [dice])
 
   function generateRandomNumber() {
     return Math.floor(Math.random() * 6) + 1
@@ -27,29 +29,38 @@ export default function Main() {
     })
   }
 
-  const [dice, setDice] = React.useState<DieData[]>(generateNewDice())
+  function checkIfWin(): boolean {
+    const diceValues = new Set<number>() // need to keep track of unique values
+
+    for (const die of dice) {
+      if (!die.isHeld) return false // return false if any die is not held - shortcircuit
+      diceValues.add(die.number) // add to set
+    }
+
+    return diceValues.size === 1 // should only be 1 unique value in the set if all dice are the same
+  }
+
+  function playAgain() {
+    setDice(generateNewDice())
+  }
 
   function rollDice() {
-    setDice(prev => prev.map((d) => {
-      return d.isHeld ? d : {...d, number: generateRandomNumber()}
-    }))
+    setDice((prev) =>
+      prev.map((d) => {
+        return d.isHeld ? d : { ...d, number: generateRandomNumber() }
+      }),
+    )
   }
 
   function holdDie(id: number) {
+    // disable holding of die if win condition met
+    if (isWin) return
+
     setDice((prev) => {
       return prev.map((n) => {
         return n.id === id ? { ...n, isHeld: !n.isHeld } : n
       })
     })
-  }
-
-  function checkIfWin(): boolean {
-    const diceValues  = new Set<number>() // need to keep track of unique values
-    dice.forEach((d) => {
-      if (!d.isHeld) return false // return false if any die is not held - shortcircuit
-      diceValues.add(d.number) // add to set
-    })
-    return diceValues.size === 1 // should only be 1 unique value in the set if all dice are the same
   }
 
   return (
@@ -69,7 +80,11 @@ export default function Main() {
         ))}
       </div>
       <div>
-        <Button onClick={rollDice}>Roll</Button>
+        {!isWin ? (
+          <Button onClick={rollDice}>Roll</Button>
+        ) : (
+          <Button onClick={playAgain}>Play Again</Button>
+        )}
       </div>
     </main>
   )
