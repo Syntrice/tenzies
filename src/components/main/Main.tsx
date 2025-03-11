@@ -70,7 +70,7 @@ export default function Main() {
   }
 
   return (
-    <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center justify-center gap-8 rounded-xl p-10 shadow-[10px_10px_3px_0px_rgba(255,255,255,0.25)]">
+    <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center justify-center gap-8 rounded-xl p-10 shadow-[10px_10px_3px_0px_rgba(255,255,255,0.25)] max-[35rem]:max-h-200 max-[35rem]:h-fit">
       {isWin && <Confetti />}
       <div aria-live="polite" className="hidden">
         {isWin && <p>"You won! Press 'Play Again' to start a new game."</p>}
@@ -92,9 +92,17 @@ export default function Main() {
       </div>
       <div>
         {!isWin ? (
-          <Button ariaLabel="Roll all dice" onClick={rollDice}>Roll</Button>
+          <Button ariaLabel="Roll all dice" onClick={rollDice}>
+            Roll
+          </Button>
         ) : (
-          <Button ref={playAgainButton} ariaLabel="Play again" onClick={playAgain}>Play Again</Button>
+          <Button
+            ref={playAgainButton}
+            ariaLabel="Play again"
+            onClick={playAgain}
+          >
+            Play Again
+          </Button>
         )}
       </div>
     </main>
