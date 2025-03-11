@@ -54,9 +54,6 @@ export default function Main() {
   }
 
   function holdDie(id: number) {
-    // disable holding of die if win condition met
-    if (isWin) return
-
     setDice((prev) => {
       return prev.map((n) => {
         return n.id === id ? { ...n, isHeld: !n.isHeld } : n
@@ -67,6 +64,9 @@ export default function Main() {
   return (
     <main className="bg-theme-light m-10 flex h-screen max-h-90 w-screen max-w-90 flex-col items-center justify-center gap-8 rounded-xl p-10 shadow-[10px_10px_3px_0px_rgba(255,255,255,0.25)]">
       {isWin && <Confetti />}
+      <div aria-live="polite" className="hidden">
+        {isWin && <p>"You won! Press 'Play Again' to start a new game."</p>}
+      </div>
       <p>
         Roll until all dice are the same. Click each die to freeze it at its
         current value between rolls.
@@ -78,14 +78,15 @@ export default function Main() {
             key={d.id}
             number={d.number}
             isHeld={d.isHeld}
+            isDisabled={isWin} // disable dice from being pressed when game is won
           />
         ))}
       </div>
       <div>
         {!isWin ? (
-          <Button onClick={rollDice}>Roll</Button>
+          <Button ariaLabel="Roll all dice" onClick={rollDice}>Roll</Button>
         ) : (
-          <Button onClick={playAgain}>Play Again</Button>
+          <Button ariaLabel="Play again" onClick={playAgain}>Play Again</Button>
         )}
       </div>
     </main>
