@@ -12,6 +12,14 @@ interface DieData {
 export default function Main() {
   const [dice, setDice] = React.useState<DieData[]>(generateNewDice())
   const isWin = React.useMemo(() => checkIfWin(), [dice])
+  const playAgainButton = React.useRef<HTMLButtonElement | null>(null)
+
+  // Select play again button on win
+  React.useEffect(() => {
+    if (isWin) {
+      playAgainButton.current?.focus()
+    }
+  }, [isWin])
 
   function generateRandomNumber() {
     return Math.floor(Math.random() * 6) + 1
@@ -86,7 +94,7 @@ export default function Main() {
         {!isWin ? (
           <Button ariaLabel="Roll all dice" onClick={rollDice}>Roll</Button>
         ) : (
-          <Button ariaLabel="Play again" onClick={playAgain}>Play Again</Button>
+          <Button ref={playAgainButton} ariaLabel="Play again" onClick={playAgain}>Play Again</Button>
         )}
       </div>
     </main>
